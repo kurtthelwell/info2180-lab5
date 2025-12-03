@@ -1,7 +1,8 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Get references to the button and result div
+    // Get references to the buttons and result div
     const lookupButton = document.getElementById('lookup');
+    const lookupCitiesButton = document.getElementById('lookup_cities');
     const resultDiv = document.getElementById('result');
     const countryInput = document.getElementById('country');
 
@@ -20,6 +21,24 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.text())
             .then(data => {
                 // Display the data in the result div
+                resultDiv.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<p>An error occurred while fetching data.</p>';
+            });
+    });
+
+    // Add click event listener to the lookup cities button
+    lookupCitiesButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const country = countryInput.value.trim();
+        const url = `world.php?country=${encodeURIComponent(country)}&lookup=cities`;
+        
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
                 resultDiv.innerHTML = data;
             })
             .catch(error => {
